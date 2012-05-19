@@ -1,0 +1,12 @@
+Write WMS getMap requests on paper
+Your task is to formulate a WMS getMap request on paper. This request should be possible to send to the WMS server at atlas.gc.ca. That is, you should use the metadata from the GetCapability request above to formulate your request (e.g. you have to find out which coordinate system you are allowed to use). General information about how to formulate a WMS getMap request you find in the WMS specifications. To write a getMap request you, among others, need to specify the following:
+layers
+bbox
+width
+height
+srs
+styles
+format
+What do these parameters contain? If you are unsure you should read about it in the WMS specifications. You should also read the specifications carefully so that you do not miss any of the mandatory parameters in your getMap request.
+You can partly design your own WMS getMap request, but you should set output format to JPG (image/jpeg).
+All questions to : daudi2010@gmail.com
