@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>
+    </title>
+   <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.1/js/dojo/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" type="text/css" href="layout.css">
+    <script type="text/javascript">
+      var djConfig = {
+        parseOnLoad: true
+      };
+    </script>
+     <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"></script>
+    </script>
+	
+	<!-- Load jQuery and jQuery UI via Google AJAX Libraries API -->
+    <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/redmond/jquery.ui.all.css" rel="Stylesheet" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+	
+	<script type="text/javascript" src="buildURL.js"></script>	    
+	<script type="text/javascript" src="wmslayers.js"></script>
+	<script type="text/javascript" src="layout.js"></script>	
+	
+    <script type="text/javascript">
+      dojo.require("dijit.dijit"); // optimize: load dijit layer
+      dojo.require("dijit.layout.BorderContainer");
+      dojo.require("dijit.layout.ContentPane");
+      dojo.require("dijit.layout.TabContainer");
+	  dojo.require("dijit.form.Select");
+	  dojo.require("dijit.form.TextBox");	
+
+	 //show map on load 
+	 dojo.addOnLoad(init);	
+    </script>
+  </head>
+
+  <body class="claro">
+    <div id="mainWindow" dojotype="dijit.layout.BorderContainer" design="headline"
+    gutters="false" style="width:100%; height:100%;">
+		<!-- Header Section section -->
+      <div id="header" dojotype="dijit.layout.ContentPane" region="top">
+        Atlas of Canada WMS Layers
+       <div id="subheader">FGS 604: GIS PROGRAMMING Project</div>
+      </div>
+	  
+	  <!-- Left Pane Section -->
+      <div dojotype="dijit.layout.ContentPane" id="leftPane" region="left">
+        <div dojotype="dijit.layout.TabContainer" >
+		  <!-- Map Navigation and parameters section section -->
+		  <div dojotype="dijit.layout.ContentPane"  title="Parameters" selected="true">	
+				<p>WMS server</p>
+				<select name="WMSURL" data-dojo-type="dijit.form.Select" id="idWMSServers">
+					<option value="http://atlas.gc.ca/cgi-bin/atlaswms_en?VERSION=1.1.1&request=GetMap" selected="selected">The Atlas of Canada</option>
+				</select>
+
+				<p>Layers</p>
+				<select name="WMSLayers" data-dojo-type="dijit.form.Select" id="idWMSLayers">
+					<option value="na_nat">Countries in the North America region.</option>
+					<option value="na_bath" selected="selected">Bathymetry for the North America region.</option>
+					<option value="wld_ocean">Ocean Background</option>
+					<option value="cirpolar_nat_nam">Country names in the North circumpolar region.</option>
+					<option value="wld_land">Land area of the world</option>
+					<option value="wld_freshwat">Large lakes of the world.</option>
+					<option value="wld_freshwat_outline">Outline of large lakes of the world.</option>
+					<option value="wld_coast">Ocean coastline of the world.</option>
+					<option value="wld_riv">Large rivers of the world.</option>
+					<option value="wld_bound">Boundaries</option>
+					<option value="wld_cap">Country Capital Cities</option>
+					<option value="wld_cap_nam">Country Capital City Names</option>
+					<option value="wld_nat_nam">Country names of the world.</option>
+				</select>
+					
+				<p>SRS</p>
+				<select name="SRS" data-dojo-type="dijit.form.Select" id="idSrs">
+					<option value="EPSG:4326" selected="selected">EPSG:4326</option>
+					<option value="EPSG:102016">EPSG:102016</option>
+					<option value="EPSG:4269">EPSG:4269</option>
+				</select>
+				
+				<form action="">
+					<div id="ifFormElements">
+					
+					<p>Style</p>
+					<input type="text" name="WMSStyle" value="" id="idStyle" />
+					
+					<p>X min</p>
+					<input type="text" name="WMSXmin" value="-180" id="idWMSXmin" />
+					
+					<p>Y min</p>
+					<input type="text" name="WMSYmin" value="-90" id="idWMSYmin" />
+					
+					<p>X max</p>
+					<input type="text" name="WMSXmax" value="180" id="idWMSXmax" />
+					
+					<p>Y max</p>
+					<input type="text" name="WMSYmax" value="83.8264" id="idWMSYmax" />
+					
+					<p>Width</p>
+					<input type="text" name="WMSWidth" value="900" id="idWMSWidth" />
+					
+					<p>Height</p>
+					<input type="text" name="WMSHeight" value="750" id="idWMSHeight" />
+					</div>
+				</form>						
+				
+					<!-- Add code -->
+	
+				<p>Format</p>
+				<select name="WMSFormat" data-dojo-type="dijit.form.Select" id="idFormat">
+					<option value="image/svg+xml">SVG</option>
+					<option value="application/xml" >XML</option>
+					<option value="image/gif">GIF</option>
+					<option value="image/jpeg">JPG</option>
+					<option value="image/png" selected="selected">PNG</option>
+					<option value="image/tiff">TIFF</option>
+					<option value="image/x-ms-bmp">BMP</option>
+				</select>					
+				
+				<br><br>				
+					<input type="button" value="GetMap" id="example_button" />				
+				<br><br>							  
+          </div>
+		  
+		  <!-- The legend section -->
+          <div dojotype="dijit.layout.ContentPane" title = "Legend">
+            <div id="legendDiv"></div>
+			Content for the legend/second tab
+          </div>
+
+        </div>
+      </div>
+	  
+	  <!-- Map section -->
+      <div id="map" dojotype="dijit.layout.ContentPane" region="center">
+	  
+      </div>
+	  
+	  <!-- Footer section -->
+      <div id="footer" dojotype="dijit.layout.ContentPane" region="bottom" >
+        this is the footer section
+      </div>
+	  
+    </div>
+  </body>
+</html>
